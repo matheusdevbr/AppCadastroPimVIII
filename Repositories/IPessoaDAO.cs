@@ -8,7 +8,11 @@ namespace AppCadastro.Repositories
 {
     public interface IPessoaDAO
     {
+        Pessoa GetById(int id);
         List<Pessoa> BuscarTodos();
         Pessoa Adicionar(Pessoa pessoa);
+        Pessoa Atualizar(Pessoa pessoa);
+        bool Excluir(int id);
+        
     }
 }
