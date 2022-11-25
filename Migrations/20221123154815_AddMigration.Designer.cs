@@ -3,14 +3,16 @@ using AppCadastro.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace AppCadastro.Migrations
 {
     [DbContext(typeof(BancoContext))]
-    partial class BancoContextModelSnapshot : ModelSnapshot
+    [Migration("20221123154815_AddMigration")]
+    partial class AddMigration
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -70,33 +72,15 @@ namespace AppCadastro.Migrations
                     b.Property<int>("PessoaId")
                         .HasColumnType("int");
 
+                    b.Property<string>("Tipo")
+                        .HasColumnType("nvarchar(max)");
+
                     b.HasKey("Id");
 
                     b.HasIndex("PessoaId")
                         .IsUnique();
 
                     b.ToTable("Telefones");
-                });
-
-            modelBuilder.Entity("AppCadastro.Entities.TipoTelefone", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<int>("TelefoneId")
-                        .HasColumnType("int");
-
-                    b.Property<string>("Tipo")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("TelefoneId")
-                        .IsUnique();
-
-                    b.ToTable("TipoTelefones");
                 });
 
             modelBuilder.Entity("AppCadastro.Models.Pessoa", b =>
@@ -137,22 +121,6 @@ namespace AppCadastro.Migrations
                         .IsRequired();
 
                     b.Navigation("Pessoa");
-                });
-
-            modelBuilder.Entity("AppCadastro.Entities.TipoTelefone", b =>
-                {
-                    b.HasOne("AppCadastro.Entities.Telefone", "Telefone")
-                        .WithOne("Tipo")
-                        .HasForeignKey("AppCadastro.Entities.TipoTelefone", "TelefoneId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Telefone");
-                });
-
-            modelBuilder.Entity("AppCadastro.Entities.Telefone", b =>
-                {
-                    b.Navigation("Tipo");
                 });
 
             modelBuilder.Entity("AppCadastro.Models.Pessoa", b =>

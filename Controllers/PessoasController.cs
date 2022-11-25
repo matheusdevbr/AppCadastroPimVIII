@@ -24,7 +24,7 @@ namespace AppCadastro.Controllers
         }
 
         public IActionResult Create()
-        {
+        {               
             return View();
         }
 
