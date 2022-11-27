@@ -12,22 +12,7 @@ namespace AppCadastro.Data
     {
         public BancoContext(DbContextOptions<BancoContext> options) : base(options)
         {
-        }
-        
-       // protected override void OnModelCreating(ModelBuilder modelBuilder)
-        //{
-          //  modelBuilder.Entity<Pessoa>()
-          //      .HasOne(a => a.Endereco)
-          //      .WithOne(b => b.Pessoa)
-          //      .HasForeignKey<Endereco>(b => b.PessoaId);
-          //  modelBuilder.Entity<Pessoa>()
-          //      .HasOne(a => a.Telefone)
-          //      .WithOne(b => b.Pessoa)
-          //      .HasForeignKey<Telefone>(b => b.PessoaId);
-            // modelBuilder.Entity<Pessoa>().ToTable("Pessoas");
-            //modelBuilder.Entity<Telefone>().ToTable("Telefones");
-            //modelBuilder.Entity<Endereco>().ToTable("Enderecos");
-       // }
+        } 
 
         public DbSet<Pessoa> Pessoas { get; set; }
         public DbSet<Endereco> Enderecos { get; set; }

@@ -9,46 +9,38 @@
 <p>
     <a asp-action="Create">Adicionar nova Pessoa</a>
 </p>
-<table class="table">
-    <thead>
-        <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.Nome)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Cpf)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Endereco)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Telefone)
-            </th>
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach (var item in Model)
-        {
-            <tr>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Nome)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Cpf)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Endereco.Cidade)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Telefone.Numero)
-                </td>
-                <td>
-                    <a asp-route-id="@item.Id" asp-action="Edit">Editar</a> |
-                    <a asp-route-id="@item.Id" asp-action="Edit">Endereço</a> |
-                    <a asp-route-id="@item.Id" asp-action="Delete">Excluir</a>
-                </td>
-            </tr>
-        }
-    </tbody>
-</table>
+
+@foreach (var item in Model)
+{
+    <div class="card">
+        <div class="card-header">
+            <h6>@Html.DisplayFor(modelItem => item.Nome)</h6>
+        </div>
+        <div class="card-body">
+            <h6 class="card-title">
+                CPF =@Html.DisplayFor(modelItem => item.Cpf)
+            </h6>
+            <h6 class="card-text">
+                Endereço:
+                @Html.DisplayFor(modelItem => item.Endereco.Logradouro),
+                @Html.DisplayFor(modelItem => item.Endereco.Numero)
+            </h6>
+            <h6 class="card-text">
+                Cidade: @Html.DisplayFor(modelItem => item.Endereco.Cidade),
+                @Html.DisplayFor(modelItem => item.Endereco.Estado)
+            </h6>
+            <h6 class="card-text">
+                CEP: @Html.DisplayFor(modelItem => item.Endereco.Cep)
+            </h6>
+            <h6 class="card-text">
+                Telefone:
+                @Html.DisplayFor(modelItem => item.Telefone.Ddd)
+                @Html.DisplayFor(modelItem => item.Telefone.Numero)
+                Tipo: @Html.DisplayFor(modelItem => item.Telefone.Tipo.Tipo)
+            </h6>
+            <a class="btn btn-primary" asp-route-id="@item.Id" asp-action="Edit">Editar</a>
+            <a class="btn btn-primary" asp-route-id="@item.Id" asp-action="Delete">Excluir</a>
+        </div>
+    </div>
+    <br />
+}

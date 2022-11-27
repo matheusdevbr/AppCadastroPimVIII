@@ -19,8 +19,13 @@ namespace AppCadastro.Repositories
 
         public Pessoa GetById(int id)
         {
-               
-            return _bancoContext.Pessoas.FirstOrDefault(x => x.Id == id);
+            var query = _bancoContext.Pessoas
+                     .Include(p => p.Endereco)
+                     .Include(p => p.Telefone)
+                     .Include(p => p.Telefone.Tipo)
+                     .Distinct()
+                     .FirstOrDefault(x => x.Id == id);
+            return query;
         }
 
         public List<Pessoa> BuscarTodos()
@@ -53,14 +58,26 @@ namespace AppCadastro.Repositories
         public Pessoa Atualizar(Pessoa pessoa)
         {
             Pessoa pessoaDb = GetById(pessoa.Id);
-            Endereco Endereco = pessoaDb.Endereco;
-            Telefone Telefone = pessoaDb.Telefone;
-
-            if (pessoaDb == null) throw new System.Exception("Erro ao atualizar dados da Pessoa");
-
+            
+            if (pessoaDb == null) throw new System.Exception("Erro ao editar Pessoa");
+            
             pessoaDb.Nome = pessoa.Nome;
             pessoaDb.Cpf = pessoa.Cpf;
 
+            pessoaDb.Endereco.Logradouro = pessoa.Endereco.Logradouro;
+            pessoaDb.Endereco.Numero = pessoa.Endereco.Numero;
+            pessoaDb.Endereco.Cidade = pessoa.Endereco.Cidade;
+            pessoaDb.Endereco.Estado = pessoa.Endereco.Estado;
+            pessoaDb.Endereco.Cep = pessoa.Endereco.Cep;
+            
+            pessoaDb.Telefone.Ddd = pessoa.Telefone.Ddd;
+            pessoaDb.Telefone.Numero = pessoa.Telefone.Numero;
+
+            pessoaDb.Telefone.Tipo.Tipo = pessoa.Telefone.Tipo.Tipo;
+
+            _bancoContext.TipoTelefones.Update(pessoaDb.Telefone.Tipo);
+            _bancoContext.Telefones.Update(pessoaDb.Telefone);
+            _bancoContext.Enderecos.Update(pessoaDb.Endereco);
             _bancoContext.Pessoas.Update(pessoaDb);
             _bancoContext.SaveChanges();
 
@@ -70,18 +87,12 @@ namespace AppCadastro.Repositories
         public bool Excluir(int id)
         {
             Pessoa pessoaDb = GetById(id);
-            Endereco enderecoDb = _bancoContext.Enderecos.FirstOrDefault(x => x.PessoaId == pessoaDb.Id);
-            Telefone telefoneDb = _bancoContext.Telefones.FirstOrDefault(x => x.PessoaId == pessoaDb.Id);
-            TipoTelefone tipoTelefoneDb = _bancoContext.TipoTelefones.FirstOrDefault(x => x.TelefoneId == telefoneDb.Id);
-
+            
             if (pessoaDb == null) throw new System.Exception("Erro ao excluir Pessoa");
-            if (enderecoDb == null) throw new System.Exception("Erro ao excluir Endereco");
-            if (telefoneDb == null) throw new System.Exception("Erro ao excluir Telefone");
-            if (tipoTelefoneDb == null) throw new System.Exception("Erro ao excluir Tipo Telefone");
 
-            _bancoContext.Enderecos.Remove(enderecoDb);
-            _bancoContext.TipoTelefones.Remove(tipoTelefoneDb);
-            _bancoContext.Telefones.Remove(telefoneDb);
+            _bancoContext.Enderecos.Remove(pessoaDb.Endereco);
+            _bancoContext.TipoTelefones.Remove(pessoaDb.Telefone.Tipo) ;
+            _bancoContext.Telefones.Remove(pessoaDb.Telefone);
             _bancoContext.Pessoas.Remove(pessoaDb);
             _bancoContext.SaveChanges();
 
